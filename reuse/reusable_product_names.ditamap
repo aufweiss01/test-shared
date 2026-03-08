@@ -1,8 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
-<map>
-  <title>Produktnamen und Variablen - Kunde XYZ (Keys)</title>
-  <keydef keys="firmenname">
-    <topicmeta><linktext>Kundenname GmbH</linktext></topicmeta>
+<map xml:lang="de-DE">
+
+  <title>Produktnamen und Herstellervariablen</title>
+
+  <!-- keydef: Definiert einen Key (eine benannte Variable).
+       keys="...": Der Name, unter dem der Key im Topic referenziert wird: <ph keyref="..."/>
+       Das keydef-Element selbst erzeugt keine Ausgabe – es ist reine Variablendefinition. -->
+
+  <!-- Operationsmikroskop -->
+  <keydef keys="produktname_opmi">
+    <topicmeta>
+      <keywords>
+        <keyword>OptiScope X200</keyword>
+        <!-- Fiktiver Produktname; im Topic referenziert als: <ph keyref="produktname_opmi"/> -->
+      </keywords>
+    </topicmeta>
   </keydef>
+
+  <keydef keys="hersteller_opmi">
+    <topicmeta>
+      <keywords>
+        <keyword>PrecisionOptics GmbH</keyword>
+      </keywords>
+    </topicmeta>
+  </keydef>
+
+  <!-- Navigationsgerät -->
+  <keydef keys="produktname_navi">
+    <topicmeta>
+      <keywords>
+        <keyword>NaviGuide 3000</keyword>
+      </keywords>
+    </topicmeta>
+  </keydef>
+
+  <keydef keys="hersteller_navi">
+    <topicmeta>
+      <keywords>
+        <keyword>SurgicalNav AG</keyword>
+      </keywords>
+    </topicmeta>
+  </keydef>
+
 </map>
