@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map>
+  <title>Bildreferenzen - Kunde XYZ (Keys)</title>
+  <!-- Keys fuer Bilder in shared/images/ -->
+  <!-- Beispiel: -->
+  <!-- <keydef keys="warnsymbol_spannung" href="../images/warnung_spannung.png" format="png"/> -->
+</map>

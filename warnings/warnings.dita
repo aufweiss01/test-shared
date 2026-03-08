@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="warnings">
+  <title>Warnhinweise</title>
+  <body>
+    <!-- Kundenweit wiederverwendbare Warnhinweise hier eintragen -->
+    <!-- Beispiel: -->
+    <!-- <note type="warning" id="warnung_spannung"> -->
+    <!--   <p>Gefaehrliche elektrische Spannung.</p> -->
+    <!-- </note> -->
+  </body>
+</topic>

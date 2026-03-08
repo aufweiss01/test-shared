@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map>
+  <title>Produktnamen und Variablen - Kunde XYZ (Keys)</title>
+  <keydef keys="firmenname">
+    <topicmeta><linktext>Kundenname GmbH</linktext></topicmeta>
+  </keydef>
+</map>

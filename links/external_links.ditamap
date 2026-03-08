@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map>
+  <title>Externe Links - Kunde XYZ (Keys)</title>
+  <!-- Kundenweit genutzte externe Links als Keys -->
+  <!-- Beispiel: -->
+  <!-- <keydef keys="link_kundenportal" href="https://www.beispiel.de" format="html" scope="external"/> -->
+</map>
