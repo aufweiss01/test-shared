@@ -11,31 +11,26 @@
     <!-- conref-Adresse: warnings.dita#warnings/warn_schnittstellendoku
          Referenziert aus: docs/tasks/t_analyse_aufgabenstellung.dita -->
 
-       <image keyref="img_warnsymbol_allgemein" placement="inline">
-      <!-- image keyref: Referenziert das Warnsymbol über den Key aus
-           shared/reuse/reusable_image_refs.ditamap
-           placement="inline": Symbol erscheint im Textfluss, nicht als
-           eigenständiger Block -->
+      <image keyref="img_warnsymbol_allgemein" placement="inline">
         <alt>Warnsymbol</alt>
       </image>
 
       <p outputclass="warning-signal"><b>WARNUNG</b></p>
-      <!-- Signalwort gemäß ANSI Z535 -->
 
-      <p outputclass="warning-hazard"><b>Fehlfunktion durch unvollständige Schnittstellendokumentation</b></p>
-      <!-- Art der Gefahr -->
+      <p outputclass="warning-hazard"><b>Fehlfunktion durch unvollständige
+      Schnittstellendokumentation</b></p>
 
-      <p outputclass="warning-consequence">Wenn die <term>Navigationsschnittstelle</term>
-      unvollständig oder ungenau dokumentiert wird, können bei der Integration von
+      <p outputclass="warning-consequence">Wenn die
+      <term>Navigationsschnittstelle</term> unvollständig oder ungenau
+      dokumentiert wird, können bei der Integration von
       <term>Operationsmikroskop</term> und <term>Navigationsgerät</term>
       Fehlfunktionen auftreten.</p>
-      <!-- Ursache und Folgen -->
 
       <ul outputclass="warning-measures">
-      <!-- Maßnahmen gemäß ANSI Z535, erweiterbar -->
         <li>Stellen Sie sicher, dass alle Komponenten der
-        <term>Navigationsschnittstelle</term> – <term>mechanische Schnittstelle</term>
-        und <term>Softwareschnittstelle</term> – vollständig dokumentiert sind.</li>
+        <term>Navigationsschnittstelle</term> –
+        <term>mechanische Schnittstelle</term> und
+        <term>Softwareschnittstelle</term> – vollständig dokumentiert sind.</li>
         <li>Lassen Sie die Dokumentation vor der Freigabe prüfen.</li>
       </ul>
 
