@@ -11,6 +11,14 @@
     <!-- conref-Adresse: warnings.dita#warnings/warn_schnittstellendoku
          Referenziert aus: docs/tasks/t_analyse_aufgabenstellung.dita -->
 
+       <image keyref="img_warnsymbol_allgemein" placement="inline">
+      <!-- image keyref: Referenziert das Warnsymbol über den Key aus
+           shared/reuse/reusable_image_refs.ditamap
+           placement="inline": Symbol erscheint im Textfluss, nicht als
+           eigenständiger Block -->
+        <alt>Warnsymbol</alt>
+      </image>
+
       <p outputclass="warning-signal"><b>WARNUNG</b></p>
       <!-- Signalwort gemäß ANSI Z535 -->
 
