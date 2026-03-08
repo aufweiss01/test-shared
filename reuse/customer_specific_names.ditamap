@@ -2,43 +2,25 @@
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
 <map xml:lang="de-DE">
 
-  <title>Produktnamen und Herstellervariablen</title>
+  <title>Kundenweit gültige Namen</title>
 
-  <!-- keydef: Definiert einen Key (eine benannte Variable).
-       keys="...": Der Name, unter dem der Key im Topic referenziert wird: <ph keyref="..."/>
-       Das keydef-Element selbst erzeugt keine Ausgabe – es ist reine Variablendefinition. -->
-
-  <!-- Operationsmikroskop -->
-  <keydef keys="produktname_opmi">
-    <topicmeta>
-      <keywords>
-        <keyword>OptiScope X200</keyword>
-        <!-- Fiktiver Produktname; im Topic referenziert als: <ph keyref="produktname_opmi"/> -->
-      </keywords>
-    </topicmeta>
-  </keydef>
-
-  <keydef keys="hersteller_opmi">
+  <keydef keys="hersteller">
     <topicmeta>
       <keywords>
         <keyword>PrecisionOptics GmbH</keyword>
+        <!-- Auftraggeber-Hersteller; kundenweit gültig.
+             Referenziert aus: allen Topics, die den Herstellernamen nennen -->
       </keywords>
     </topicmeta>
   </keydef>
 
-  <!-- Navigationsgerät -->
-  <keydef keys="produktname_navi">
+  <keydef keys="optiscope_x200">
     <topicmeta>
       <keywords>
-        <keyword>NaviGuide 3000</keyword>
-      </keywords>
-    </topicmeta>
-  </keydef>
-
-  <keydef keys="hersteller_navi">
-    <topicmeta>
-      <keywords>
-        <keyword>SurgicalNav AG</keyword>
+        <keyword>OptiScope X200</keyword>
+        <!-- Produktname des Operationsmikroskops; Key entspricht dem Produktnamen
+             in angepasster Schreibweise. Ermöglicht produktübergreifende Referenzierung.
+             Referenziert aus: Topics, die auf das Opmi als Schwesterprodukt verweisen -->
       </keywords>
     </topicmeta>
   </keydef>
