@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
-<map>
-  <title>Shared Reuse-Ressourcen - Kunde XYZ</title>
+<map xml:lang="de-DE">
+
+  <title>Shared Reuse-Ressourcen</title>
+
+  <mapref href="customer_specific_names.ditamap" format="ditamap"/>
+  <!-- Referenz auf umbenannte Map: customer_specific_names -->
   <mapref href="reusable_image_refs.ditamap" format="ditamap"/>
-  <mapref href="reusable_product_names.ditamap" format="ditamap"/>
   <mapref href="../links/external_links.ditamap" format="ditamap"/>
+
 </map>
