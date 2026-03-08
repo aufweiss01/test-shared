@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
-<map>
-  <title>Bildreferenzen - Kunde XYZ (Keys)</title>
-  <!-- Keys fuer Bilder in shared/images/ -->
-  <!-- Beispiel: -->
-  <!-- <keydef keys="warnsymbol_spannung" href="../images/warnung_spannung.png" format="png"/> -->
+<map xml:lang="de-DE">
+
+  <title>Bildreferenzen – Shared</title>
+
+  <keydef keys="img_warnsymbol_allgemein"
+          href="../images/warnsymbol_allgemein.png"
+          format="png">
+  <!-- keydef: Definiert einen Key für das kundenweit wiederverwendbare Warnsymbol.
+       href: Pfad zum Bild, relativ zu dieser Map.
+       format: Pflichtangabe; gibt das Dateiformat an.
+       Referenziert aus: warnings/warnings.dita -->
+  </keydef>
+
 </map>
