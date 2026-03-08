@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
-<topic id="warnings">
+
+<topic id="warnings" xml:lang="de-DE">
+
   <title>Warnhinweise</title>
+
   <body>
-    <!-- Kundenweit wiederverwendbare Warnhinweise hier eintragen -->
-    <!-- Beispiel: -->
-    <!-- <note type="warning" id="warnung_spannung"> -->
-    <!--   <p>Gefaehrliche elektrische Spannung.</p> -->
-    <!-- </note> -->
+
+    <note type="warning" id="warn_schnittstellendoku">
+    <!-- conref-Adresse: warnings.dita#warnings/warn_schnittstellendoku
+         Referenziert aus: docs/tasks/t_analyse_aufgabenstellung.dita -->
+      <p><b>WARNUNG</b></p>
+      <!-- Signalwort gemäß ANSI Z535 -->
+      <p><b>Fehlfunktion durch unvollständige Schnittstellendokumentation</b></p>
+      <!-- Art der Gefahr -->
+      <p>Wenn die <term>Navigationsschnittstelle</term> unvollständig oder ungenau
+      dokumentiert wird, können bei der Integration von
+      <term>Operationsmikroskop</term> und <term>Navigationsgerät</term>
+      Fehlfunktionen auftreten.</p>
+      <!-- Ursache und Folgen -->
+      <ul>
+      <!-- Maßnahmen gemäß ANSI Z535 als Liste, erweiterbar -->
+        <li>Stellen Sie sicher, dass alle Komponenten der
+        <term>Navigationsschnittstelle</term> – <term>mechanische Schnittstelle</term>
+        und <term>Softwareschnittstelle</term> – vollständig dokumentiert sind.</li>
+        <li>Lassen Sie die Dokumentation vor der Freigabe prüfen.</li>
+      </ul>
+    </note>
+
   </body>
 </topic>
