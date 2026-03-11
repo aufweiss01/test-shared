@@ -7,7 +7,7 @@
 
   <body>
 
-    <note type="warning" id="warn_schnittstellendoku">
+    <note type="warning" id="warn_schnittstellendoku" product="optiscope_x200">
     <!-- conref-Adresse: warnings.dita#warnings/warn_schnittstellendoku
          Referenziert aus: docs/tasks/t_analyse_aufgabenstellung.dita -->
 
