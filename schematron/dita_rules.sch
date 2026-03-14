@@ -77,6 +77,21 @@
   <sch:let name="product-values"
            value="('optiscope_x200', 'optiscope_a800')"/>
 
+  <!-- TERMINOLOGIEDATENBANKEN
+       Pfade relativ zur geprüften DITA-Datei im Produktrepo.
+       Annahme: DITA-Datei liegt in docs/[typ]/datei.dita
+       Pfad zu shared/ ist dann ../../shared/
+       Bei anderer Verzeichnistiefe Pfade hier anpassen.
+
+       customer_specific_termbase.tbx – gilt für alle Projekte des Kunden
+       project_specific_termbase.tbx  – gilt nur für dieses Projekt      -->
+  <sch:let name="customer-termbase-path"
+           value="resolve-uri('../../shared/customer_specific_termbase.tbx',
+                               base-uri(.))"/>
+  <sch:let name="project-termbase-path"
+           value="resolve-uri('docs/reuse/project_specific_termbase.tbx',
+                               base-uri(.))"/>
+
 
   <!-- ============================================================
        REGEL 1: Pflichtfelder im Topic-Prolog
@@ -339,6 +354,79 @@
         Erlaubte Werte: <sch:value-of select="string-join($product-values, ', ')"/>
         Neuen Wert in der Variablen $product-values am Anfang dieser Datei eintragen.
       </sch:assert>
+
+    </sch:rule>
+  </sch:pattern>
+
+
+  <!-- ============================================================
+       REGEL 12: Verbotene Begriffe aus customer_specific_termbase.tbx
+       Prüft den gesamten Textinhalt des Topics auf deprecatedTerms
+       aus der kundenweiten Terminologiedatenbank.
+
+       HINWEIS: Die Prüfung ist absichtlich einfach gehalten –
+       sie meldet jeden Treffer, auch in Kommentaren oder Attributen.
+       Für eine präzisere Prüfung (nur Fließtext) kann der Kontext
+       auf //body//text() eingeschränkt werden.
+       ============================================================ -->
+  <sch:pattern id="terminologie-kunde">
+    <sch:title>Verbotene Begriffe (kundenweit)</sch:title>
+
+    <sch:rule context="*[contains(@class, ' topic/topic ')]">
+
+      <sch:let name="topic-text"
+               value="string(.)"/>
+
+      <sch:let name="verbotene-begriffe-kunde"
+               value="if (doc-available($customer-termbase-path))
+                      then doc($customer-termbase-path)
+                           //termSec[termNote[@type='termType']
+                                    = 'deprecatedTerm']/term
+                      else ()"/>
+
+      <sch:report test="some $begriff in $verbotene-begriffe-kunde
+                        satisfies contains($topic-text, $begriff)"
+                  role="warning">
+        WARNUNG: Verbotener Begriff gefunden (kundenweit).
+        Bitte prüfen: <sch:value-of select="
+          string-join(
+            $verbotene-begriffe-kunde[contains($topic-text, .)], ', ')"/>
+        Erlaubte Alternativen in customer_specific_termbase.tbx nachschlagen.
+      </sch:report>
+
+    </sch:rule>
+  </sch:pattern>
+
+
+  <!-- ============================================================
+       REGEL 13: Verbotene Begriffe aus project_specific_termbase.tbx
+       Prüft auf deprecatedTerms aus der projektspezifischen
+       Terminologiedatenbank.
+       ============================================================ -->
+  <sch:pattern id="terminologie-projekt">
+    <sch:title>Verbotene Begriffe (projektspezifisch)</sch:title>
+
+    <sch:rule context="*[contains(@class, ' topic/topic ')]">
+
+      <sch:let name="topic-text"
+               value="string(.)"/>
+
+      <sch:let name="verbotene-begriffe-projekt"
+               value="if (doc-available($project-termbase-path))
+                      then doc($project-termbase-path)
+                           //termSec[termNote[@type='termType']
+                                    = 'deprecatedTerm']/term
+                      else ()"/>
+
+      <sch:report test="some $begriff in $verbotene-begriffe-projekt
+                        satisfies contains($topic-text, $begriff)"
+                  role="warning">
+        WARNUNG: Verbotener Begriff gefunden (projektspezifisch).
+        Bitte prüfen: <sch:value-of select="
+          string-join(
+            $verbotene-begriffe-projekt[contains($topic-text, .)], ', ')"/>
+        Erlaubte Alternativen in project_specific_termbase.tbx nachschlagen.
+      </sch:report>
 
     </sch:rule>
   </sch:pattern>

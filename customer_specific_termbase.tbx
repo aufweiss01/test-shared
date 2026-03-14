@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE TBX-Default SYSTEM "TBXcoreStructV03_TBX-Default_strict.dtd">
+<!--
+  Kundenweit gültige Terminologiedatenbank
+  Speicherort: shared/customer_specific_termbase.tbx
+  Stand:       2026-03-14  |  Version: 1.0
+  Format:      TBX-Default (ISO 30042:2019)
+
+  INHALT
+  ======
+  Begriffe, die für alle Projekte dieses Kunden gelten.
+  Projektspezifische Begriffe gehören in:
+  docs/reuse/project_specific_termbase.tbx
+
+  AUSBAUSTUFEN
+  =============
+  Aktuell befüllt:     TBX-Basic
+                       (Begriff, Sprachebene, termType)
+  Struktur vorbereitet für TBX-Default:
+                       Definitionen, Grammatik, Beziehungen –
+                       entsprechende Felder sind auskommentiert
+                       und können bei Bedarf aktiviert werden.
+
+  TERMTYPE-WERTE
+  ==============
+  preferredTerm  – Vorzugsbenennung
+  admittedTerm   – erlaubt, aber nicht bevorzugt
+  deprecatedTerm – verboten
+-->
+<TBX-Default xml:lang="de-DE"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <tbxHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Kundenweit gültige Terminologie – Optiscope</title>
+      </titleStmt>
+      <sourceDesc>
+        <p>Erarbeitet im Rahmen des DITA-Dokumentenmanagement-Projekts, März 2026.</p>
+      </sourceDesc>
+    </fileDesc>
+  </tbxHeader>
+
+  <text>
+    <body>
+
+      <!-- ============================================================
+           KONZEPT 1: Operationsmikroskop
+           Vorzugsbenennung + verbotene Kurzform + erlaubter Oberbegriff
+           ============================================================ -->
+      <conceptEntry id="c001">
+
+        <!--
+          TBX-Default-Erweiterung:
+          <descrip type="subjectField">Medizintechnik</descrip>
+          <descrip type="definition">
+            Optisches Gerät zur vergrößerten Darstellung des
+            Operationsfeldes in der Mikrochirurgie.
+          </descrip>
+        -->
+
+        <langSec xml:lang="de-DE">
+
+          <termSec>
+            <term>Operationsmikroskop</term>
+            <termNote type="termType">preferredTerm</termNote>
+            <!--
+              TBX-Default-Erweiterung:
+              <termNote type="partOfSpeech">noun</termNote>
+              <termNote type="grammaticalGender">neuter</termNote>
+            -->
+          </termSec>
+
+          <termSec>
+            <term>Opmi</term>
+            <termNote type="termType">deprecatedTerm</termNote>
+            <!--
+              TBX-Default-Erweiterung:
+              <termNote type="usageNote">
+                Abkürzung; im Fließtext nicht verwenden.
+              </termNote>
+            -->
+          </termSec>
+
+          <termSec>
+            <term>Mikroskop</term>
+            <termNote type="termType">admittedTerm</termNote>
+            <!--
+              TBX-Default-Erweiterung:
+              <termNote type="usageNote">
+                Nur als hierarchischer Oberbegriff zulässig.
+              </termNote>
+            -->
+          </termSec>
+
+        </langSec>
+
+        <!--
+          TBX-Default-Erweiterung: weitere Sprachen
+          <langSec xml:lang="en-GB">
+            <termSec>
+              <term>surgical microscope</term>
+              <termNote type="termType">preferredTerm</termNote>
+            </termSec>
+          </langSec>
+        -->
+
+      </conceptEntry>
+
+
+      <!-- ============================================================
+           KONZEPT 2: Navigationsschnittstelle
+           Oberbegriff für mechanische + Softwareschnittstelle
+           Unterbegriffe siehe project_specific_termbase.tbx
+           ============================================================ -->
+      <conceptEntry id="c002">
+
+        <!--
+          TBX-Default-Erweiterung:
+          <descrip type="definition">
+            Oberbegriff für alle Schnittstellen, die der Navigation
+            des Operationsmikroskops dienen (mechanisch und Software).
+          </descrip>
+        -->
+
+        <langSec xml:lang="de-DE">
+
+          <termSec>
+            <term>Navigationsschnittstelle</term>
+            <termNote type="termType">preferredTerm</termNote>
+            <!--
+              TBX-Default-Erweiterung:
+              <termNote type="partOfSpeech">noun</termNote>
+              <termNote type="grammaticalGender">feminine</termNote>
+              Begriffsbeziehungen (partitiv, Unterbegriffe in
+              project_specific_termbase.tbx):
+              <descrip type="narrower">p-c001, p-c002</descrip>
+            -->
+          </termSec>
+
+          <termSec>
+            <term>Interface</term>
+            <termNote type="termType">deprecatedTerm</termNote>
+            <!--
+              TBX-Default-Erweiterung:
+              <termNote type="usageNote">
+                Englischer Begriff; im deutschen Fließtext nicht verwenden.
+              </termNote>
+            -->
+          </termSec>
+
+          <termSec>
+            <term>Schnittstelle</term>
+            <termNote type="termType">admittedTerm</termNote>
+            <!--
+              TBX-Default-Erweiterung:
+              <termNote type="usageNote">
+                Nur als hierarchischer Oberbegriff zulässig.
+              </termNote>
+            -->
+          </termSec>
+
+        </langSec>
+
+      </conceptEntry>
+
+
+      <!-- ============================================================
+           KONZEPT 3: Navigationsgerät
+           Eigenständiger Begriff; kein Unterbegriff
+           ============================================================ -->
+      <conceptEntry id="c003">
+
+        <!--
+          TBX-Default-Erweiterung:
+          <descrip type="definition">
+            Gerät zur Navigation des Operationsmikroskops.
+          </descrip>
+        -->
+
+        <langSec xml:lang="de-DE">
+
+          <termSec>
+            <term>Navigationsgerät</term>
+            <termNote type="termType">preferredTerm</termNote>
+            <!--
+              TBX-Default-Erweiterung:
+              <termNote type="partOfSpeech">noun</termNote>
+              <termNote type="grammaticalGender">neuter</termNote>
+            -->
+          </termSec>
+
+        </langSec>
+
+      </conceptEntry>
+
+    </body>
+  </text>
+
+</TBX-Default>
