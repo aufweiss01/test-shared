@@ -78,19 +78,62 @@
            value="('optiscope_x200', 'optiscope_a800')"/>
 
   <!-- TERMINOLOGIEDATENBANKEN
-       Pfade relativ zur geprüften DITA-Datei im Produktrepo.
-       Annahme: DITA-Datei liegt in docs/[typ]/datei.dita
-       Pfad zu shared/ ist dann ../../shared/
-       Bei anderer Verzeichnistiefe Pfade hier anpassen.
-
        customer_specific_termbase.tbx – gilt für alle Projekte des Kunden
-       project_specific_termbase.tbx  – gilt nur für dieses Projekt      -->
+                                        Speicherort: shared/ (Submodul)
+       project_specific_termbase.tbx  – gilt nur für dieses Projekt
+                                        Speicherort: Wurzelverzeichnis Produktrepo
+
+       PFADBERECHNUNG
+       ==============
+       Schematron kennt kein "Repo-Wurzelverzeichnis". Deshalb wird es
+       dynamisch aus dem Pfad der gerade geprüften Datei berechnet:
+
+       Schritt 1 – $aktueller-pfad:
+         base-uri(.) liefert den vollständigen Dateipfad, z.B.:
+         file:///pfad/zum/repo/docs/tasks/t_beispiel.dita
+         file:///pfad/zum/repo/translations/en-GB/tasks/t_beispiel.dita
+
+       Schritt 2 – $repo-wurzel:
+         replace() schneidet alles ab dem ersten Vorkommen von
+         /docs/ oder /translations/ ab.
+         Ergebnis: file:///pfad/zum/repo/
+         Das funktioniert unabhängig davon, wie tief die Datei liegt.
+
+       Schritt 3 – Pfade zusammensetzen:
+         An die berechnete Wurzel werden die bekannten relativen
+         Pfade zu den TBX-Dateien angehängt.
+
+       VORAUSSETZUNG
+       =============
+       Die geprüfte Datei muss unter docs/ oder translations/ liegen.
+       Bei abweichender Struktur das Muster in replace() anpassen.    -->
+
+  <sch:let name="aktueller-pfad"
+           value="base-uri(.)"/>
+
+  <!--
+    Wurzelverzeichnis des Produktrepos berechnen.
+    Das Muster /(docs|translations)/.* trifft auf alles ab dem
+    ersten /docs/ oder /translations/ und schneidet es ab.
+    replace() gibt dann nur noch den Pfad bis zur Wurzel zurück.
+  -->
+  <sch:let name="repo-wurzel"
+           value="replace($aktueller-pfad,
+                          '/(docs|translations)/.*$',
+                          '/')"/>
+
+  <!--
+    shared/ liegt eine Ebene oberhalb des Produktrepos.
+    Annahme: Produktrepo und Shared-Repo liegen nebeneinander,
+    shared/ ist als Git-Submodul unter shared/ eingebunden.
+  -->
   <sch:let name="customer-termbase-path"
-           value="resolve-uri('../../shared/customer_specific_termbase.tbx',
-                               base-uri(.))"/>
+           value="concat($repo-wurzel,
+                         'shared/customer_specific_termbase.tbx')"/>
+
   <sch:let name="project-termbase-path"
-           value="resolve-uri('docs/reuse/project_specific_termbase.tbx',
-                               base-uri(.))"/>
+           value="concat($repo-wurzel,
+                         'project_specific_termbase.tbx')"/>
 
 
   <!-- ============================================================
