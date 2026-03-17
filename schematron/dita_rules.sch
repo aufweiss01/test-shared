@@ -77,64 +77,6 @@
   <sch:let name="product-values"
            value="('optiscope_x200', 'optiscope_a800')"/>
 
-  <!-- TERMINOLOGIEDATENBANKEN
-       customer_specific_termbase.tbx – gilt für alle Projekte des Kunden
-                                        Speicherort: shared/ (Submodul)
-       project_specific_termbase.tbx  – gilt nur für dieses Projekt
-                                        Speicherort: Wurzelverzeichnis Produktrepo
-
-       PFADBERECHNUNG
-       ==============
-       Schematron kennt kein "Repo-Wurzelverzeichnis". Deshalb wird es
-       dynamisch aus dem Pfad der gerade geprüften Datei berechnet:
-
-       Schritt 1 – $aktueller-pfad:
-         base-uri(.) liefert den vollständigen Dateipfad, z.B.:
-         file:///pfad/zum/repo/docs/tasks/t_beispiel.dita
-         file:///pfad/zum/repo/translations/en-GB/tasks/t_beispiel.dita
-
-       Schritt 2 – $repo-wurzel:
-         replace() schneidet alles ab dem ersten Vorkommen von
-         /docs/ oder /translations/ ab.
-         Ergebnis: file:///pfad/zum/repo/
-         Das funktioniert unabhängig davon, wie tief die Datei liegt.
-
-       Schritt 3 – Pfade zusammensetzen:
-         An die berechnete Wurzel werden die bekannten relativen
-         Pfade zu den TBX-Dateien angehängt.
-
-       VORAUSSETZUNG
-       =============
-       Die geprüfte Datei muss unter docs/ oder translations/ liegen.
-       Bei abweichender Struktur das Muster in replace() anpassen.    -->
-
-  <sch:let name="aktueller-pfad"
-           value="base-uri(.)"/>
-
-  <!--
-    Wurzelverzeichnis des Produktrepos berechnen.
-    Das Muster /(docs|translations)/.* trifft auf alles ab dem
-    ersten /docs/ oder /translations/ und schneidet es ab.
-    replace() gibt dann nur noch den Pfad bis zur Wurzel zurück.
-  -->
-  <sch:let name="repo-wurzel"
-           value="replace($aktueller-pfad,
-                          '/(docs|translations)/.*$',
-                          '/')"/>
-
-  <!--
-    shared/ liegt eine Ebene oberhalb des Produktrepos.
-    Annahme: Produktrepo und Shared-Repo liegen nebeneinander,
-    shared/ ist als Git-Submodul unter shared/ eingebunden.
-  -->
-  <sch:let name="customer-termbase-path"
-           value="concat($repo-wurzel,
-                         'shared/customer_specific_termbase.tbx')"/>
-
-  <sch:let name="project-termbase-path"
-           value="concat($repo-wurzel,
-                         'project_specific_termbase.tbx')"/>
-
 
   <!-- ============================================================
        REGEL 1: Pflichtfelder im Topic-Prolog
@@ -405,37 +347,48 @@
 
 
   <!-- ============================================================
-       REGEL 12: Verbotene Begriffe aus customer_specific_termbase.tbx
-       Prüft den gesamten Textinhalt des Topics auf deprecatedTerms
-       aus der kundenweiten Terminologiedatenbank.
+       REGEL 12+13: Verbotene Begriffe
+       Die verbotenen Begriffe werden aus den TBX-Dateien gelesen.
+       Die Pfade werden als Parameter von außen übergeben –
+       entweder von der GitHub Actions Pipeline oder vom
+       lokalen Prüfskript.
 
-       HINWEIS: Die Prüfung ist absichtlich einfach gehalten –
-       sie meldet jeden Treffer, auch in Kommentaren oder Attributen.
-       Für eine präzisere Prüfung (nur Fließtext) kann der Kontext
-       auf //body//text() eingeschränkt werden.
+       PARAMETER (von außen zu übergeben):
+         customer-termbase-path – absoluter file://-Pfad zur
+           shared/customer_specific_termbase.tbx
+         project-termbase-path  – absoluter file://-Pfad zur
+           project_specific_termbase.tbx
+
+       PFLEGE: Verbotene Begriffe ausschließlich in den TBX-Dateien
+       pflegen – nicht hier in der Schematron-Datei.
        ============================================================ -->
+
+  <!-- Pfade zu den TBX-Dateien – werden als Parameter übergeben -->
+  <sch:let name="customer-termbase-path" value="''"/>
+  <sch:let name="project-termbase-path"  value="''"/>
+
+
   <sch:pattern id="terminologie-kunde">
     <sch:title>Verbotene Begriffe (kundenweit)</sch:title>
 
     <sch:rule context="*[contains(@class, ' topic/topic ')]">
 
-      <sch:let name="topic-text"
-               value="string(.)"/>
+      <sch:let name="topic-text" value="string(.)"/>
 
-      <sch:let name="verbotene-begriffe-kunde"
-               value="if (doc-available($customer-termbase-path))
+      <sch:let name="verboten-kunde"
+               value="if ($customer-termbase-path != '' and
+                          doc-available($customer-termbase-path))
                       then doc($customer-termbase-path)
                            //termSec[termNote[@type='termType']
                                     = 'deprecatedTerm']/term
                       else ()"/>
 
-      <sch:report test="some $begriff in $verbotene-begriffe-kunde
+      <sch:report test="some $begriff in $verboten-kunde
                         satisfies contains($topic-text, $begriff)"
                   role="warning">
         WARNUNG: Verbotener Begriff gefunden (kundenweit).
         Bitte prüfen: <sch:value-of select="
-          string-join(
-            $verbotene-begriffe-kunde[contains($topic-text, .)], ', ')"/>
+          string-join($verboten-kunde[contains($topic-text, .)], ', ')"/>
         Erlaubte Alternativen in customer_specific_termbase.tbx nachschlagen.
       </sch:report>
 
@@ -443,33 +396,27 @@
   </sch:pattern>
 
 
-  <!-- ============================================================
-       REGEL 13: Verbotene Begriffe aus project_specific_termbase.tbx
-       Prüft auf deprecatedTerms aus der projektspezifischen
-       Terminologiedatenbank.
-       ============================================================ -->
   <sch:pattern id="terminologie-projekt">
     <sch:title>Verbotene Begriffe (projektspezifisch)</sch:title>
 
     <sch:rule context="*[contains(@class, ' topic/topic ')]">
 
-      <sch:let name="topic-text"
-               value="string(.)"/>
+      <sch:let name="topic-text" value="string(.)"/>
 
-      <sch:let name="verbotene-begriffe-projekt"
-               value="if (doc-available($project-termbase-path))
+      <sch:let name="verboten-projekt"
+               value="if ($project-termbase-path != '' and
+                          doc-available($project-termbase-path))
                       then doc($project-termbase-path)
                            //termSec[termNote[@type='termType']
                                     = 'deprecatedTerm']/term
                       else ()"/>
 
-      <sch:report test="some $begriff in $verbotene-begriffe-projekt
+      <sch:report test="some $begriff in $verboten-projekt
                         satisfies contains($topic-text, $begriff)"
                   role="warning">
         WARNUNG: Verbotener Begriff gefunden (projektspezifisch).
         Bitte prüfen: <sch:value-of select="
-          string-join(
-            $verbotene-begriffe-projekt[contains($topic-text, .)], ', ')"/>
+          string-join($verboten-projekt[contains($topic-text, .)], ', ')"/>
         Erlaubte Alternativen in project_specific_termbase.tbx nachschlagen.
       </sch:report>
 
