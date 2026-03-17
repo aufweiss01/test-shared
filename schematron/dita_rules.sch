@@ -348,24 +348,21 @@
 
   <!-- ============================================================
        REGEL 12+13: Verbotene Begriffe
-       Die verbotenen Begriffe werden aus den TBX-Dateien gelesen.
-       Die Pfade werden als Parameter von außen übergeben –
-       entweder von der GitHub Actions Pipeline oder vom
-       lokalen Prüfskript.
+       Die TBX-Dateien werden von Saxon als XML-Dokumente
+       übergeben (Saxon +-Parameter). Kein Pfadproblem,
+       kein doc()-Aufruf nötig.
 
-       PARAMETER (von außen zu übergeben):
-         customer-termbase-path – absoluter file://-Pfad zur
-           shared/customer_specific_termbase.tbx
-         project-termbase-path  – absoluter file://-Pfad zur
-           project_specific_termbase.tbx
+       PARAMETER (von außen als XML-Dokument zu übergeben):
+         customer-termbase – customer_specific_termbase.tbx
+         project-termbase  – project_specific_termbase.tbx
 
        PFLEGE: Verbotene Begriffe ausschließlich in den TBX-Dateien
        pflegen – nicht hier in der Schematron-Datei.
        ============================================================ -->
 
-  <!-- Pfade zu den TBX-Dateien – werden als Parameter übergeben -->
-  <sch:let name="customer-termbase-path" value="''"/>
-  <sch:let name="project-termbase-path"  value="''"/>
+  <!-- TBX-Dokumente – werden von Saxon als geparste XML-Dokumente übergeben -->
+  <sch:let name="customer-termbase" value="()"/>
+  <sch:let name="project-termbase"  value="()"/>
 
 
   <sch:pattern id="terminologie-kunde">
@@ -376,12 +373,9 @@
       <sch:let name="topic-text" value="string(.)"/>
 
       <sch:let name="verboten-kunde"
-               value="if ($customer-termbase-path != '' and
-                          doc-available($customer-termbase-path))
-                      then doc($customer-termbase-path)
-                           //termSec[termNote[@type='termType']
-                                    = 'deprecatedTerm']/term
-                      else ()"/>
+               value="$customer-termbase
+                      //termSec[termNote[@type='termType']
+                               = 'deprecatedTerm']/term"/>
 
       <sch:report test="some $begriff in $verboten-kunde
                         satisfies contains($topic-text, $begriff)"
@@ -404,12 +398,9 @@
       <sch:let name="topic-text" value="string(.)"/>
 
       <sch:let name="verboten-projekt"
-               value="if ($project-termbase-path != '' and
-                          doc-available($project-termbase-path))
-                      then doc($project-termbase-path)
-                           //termSec[termNote[@type='termType']
-                                    = 'deprecatedTerm']/term
-                      else ()"/>
+               value="$project-termbase
+                      //termSec[termNote[@type='termType']
+                               = 'deprecatedTerm']/term"/>
 
       <sch:report test="some $begriff in $verboten-projekt
                         satisfies contains($topic-text, $begriff)"
