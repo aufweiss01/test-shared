@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python3
 """
-Terminologiepruefung: Prueft DITA-Dateien auf verbotene Begriffe
+Terminologiepruefung: Prueft DITA-Dateien auf verbotene Benennungen
 aus TBX-Terminologiedatenbanken.
 
 Verwendung:
@@ -15,7 +15,7 @@ Rueckgabewert:
     0 - keine Verstoesse gefunden
     1 - mindestens ein Verstoss gefunden
 
-Speicherort: .github/scripts/check_terminology.py
+Speicherort: shared/scripts/check_terminology.py
 
 HINWEIS ZUR SPRACHPRUEFUNG:
     Aktuell wird die Sprache fest als Argument uebergeben (Standard: de-DE).
@@ -31,7 +31,7 @@ import argparse
 XML_LANG = '{http://www.w3.org/XML/1998/namespace}lang'
 
 
-def lade_verbotene_begriffe(tbx_dateien, sprache):
+def lade_verbotene_benennungen(tbx_dateien, sprache):
     """Liest deprecatedTerm-Eintraege aus TBX-Dateien fuer die angegebene Sprache."""
     verboten = []
     for tbx_datei in tbx_dateien:
@@ -56,13 +56,13 @@ def lade_verbotene_begriffe(tbx_dateien, sprache):
     return verboten
 
 
-def pruefe_dita_datei(dita_datei, verbotene_begriffe):
-    """Prueft eine DITA-Datei auf verbotene Begriffe im Textinhalt."""
+def pruefe_dita_datei(dita_datei, verbotene_benennungen):
+    """Prueft eine DITA-Datei auf verbotene Benennungen im Textinhalt."""
     try:
         tree = ET.parse(dita_datei)
         root = tree.getroot()
         text = ' '.join(root.itertext())
-        gefunden = [b for b in verbotene_begriffe if b in text]
+        gefunden = [b for b in verbotene_benennungen if b in text]
         return gefunden
     except ET.ParseError as e:
         print('DITA-Parse-Fehler in ' + dita_datei + ': ' + str(e),
@@ -78,15 +78,15 @@ def main():
     parser.add_argument('--tbx',     nargs='+', required=True,
                         help='TBX-Terminologiedatenbanken')
     parser.add_argument('--lang',    default='de-DE',
-                        help='Sprache der zu pruefenden Begriffe (Standard: de-DE)')
+                        help='Sprache der zu pruefenden Benennungen (Standard: de-DE)')
     parser.add_argument('--summary', action='store_true',
                         help='GitHub Job Summary ausgeben')
     args = parser.parse_args()
 
-    verbotene_begriffe = lade_verbotene_begriffe(args.tbx, args.lang)
+    verbotene_benennungen = lade_verbotene_benennungen(args.tbx, args.lang)
 
-    if not verbotene_begriffe:
-        print('Keine verbotenen Begriffe in TBX-Dateien gefunden '
+    if not verbotene_benennungen:
+        print('Keine verbotenen Benennungen in TBX-Dateien gefunden '
               '(Sprache: ' + args.lang + ').')
         return 0
 
@@ -99,20 +99,29 @@ def main():
         if not os.path.isfile(dita_datei):
             continue
 
-        gefunden = pruefe_dita_datei(dita_datei, verbotene_begriffe)
+        gefunden = pruefe_dita_datei(dita_datei, verbotene_benennungen)
 
         if gefunden:
             print('')
-            print('Warnung: ' + dita_datei)
-            for begriff in gefunden:
-                print('   -> Verbotener Begriff: "' + begriff + '"')
-                print('      Bitte Vorzugsbenennung aus Terminologiedatenbank verwenden.')
-            summary_zeilen.append(
-                '| `' + dita_datei + '` | ⚠️ ' + ', '.join(gefunden) + ' |')
+            print('⚠️  ' + dita_datei)
+            for benennung in gefunden:
+                print('   → Verbotene Benennung: "' + benennung + '"')
+            # Job Summary: jede verbotene Benennung als eigene Zeile
+            erste_zeile = True
+            for benennung in gefunden:
+                if erste_zeile:
+                    summary_zeilen.append(
+                        '| `' + dita_datei + '` | ⚠️ Verbotene Benennung: `' +
+                        benennung + '` |')
+                    erste_zeile = False
+                else:
+                    summary_zeilen.append(
+                        '| | ⚠️ Verbotene Benennung: `' + benennung + '` |')
+            summary_zeilen.append('| | |')
             verstoesse_gesamt += 1
         else:
-            print('OK: ' + dita_datei)
-            summary_zeilen.append('| `' + dita_datei + '` | ✅ OK |')
+            # OK-Dateien nicht einzeln ausgeben
+            pass
 
     # GitHub Job Summary
     if args.summary:
@@ -122,23 +131,25 @@ def main():
                 f.write('\n## Terminologiepruefung\n\n')
                 f.write('| Datei | Ergebnis |\n')
                 f.write('|-------|----------|\n')
-                for zeile in summary_zeilen:
-                    f.write(zeile + '\n')
-                if verstoesse_gesamt > 0:
-                    f.write('\n> Warnung: **' + str(verstoesse_gesamt) +
-                            ' Datei(en) mit verbotenen Begriffen.**\n')
+                if summary_zeilen:
+                    for zeile in summary_zeilen:
+                        f.write(zeile + '\n')
+                    f.write('\n> ⚠️ **' + str(verstoesse_gesamt) +
+                            ' Datei(en) mit verbotenen Benennungen.**\n')
                 else:
-                    f.write('\n> OK: **Keine verbotenen Begriffe gefunden.**\n')
+                    f.write('| – | ✅ Keine verbotenen Benennungen gefunden. |\n')
+                    f.write('\n> ✅ **Terminologiepruefung erfolgreich.**\n')
 
     if verstoesse_gesamt > 0:
         print('')
-        print('Warnung: Terminologiepruefung: ' + str(verstoesse_gesamt) +
-              ' Datei(en) mit verbotenen Begriffen.')
+        print('⚠️  Terminologiepruefung: ' + str(verstoesse_gesamt) +
+              ' Datei(en) mit verbotenen Benennungen.')
+        print('Vorzugsbenennungen in customer_specific_termbase.tbx nachschlagen.')
         print('Verstoesse sind Warnungen - kein Merge-Block.')
         return 1
 
     print('')
-    print('OK: Terminologiepruefung erfolgreich.')
+    print('✅ Terminologiepruefung erfolgreich.')
     return 0
 
 
