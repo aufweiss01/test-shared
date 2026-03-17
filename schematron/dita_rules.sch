@@ -367,7 +367,8 @@
                   role="error">
         FEHLER: Ungültiger Produktname in &lt;prodname&gt;: "<sch:value-of select="normalize-space(.)"/>".
         Erlaubte Werte: <sch:value-of select="string-join($prodname-values, ', ')"/>
-        Neuen Produktnamen in der Variablen $prodname-values am Anfang dieser Datei eintragen.
+        Bitte gültigen Produktnamen in &lt;prodname&gt; eintragen
+        oder erlaubte Werte in dita_rules.sch ergänzen.
       </sch:assert>
 
     </sch:rule>
@@ -395,7 +396,8 @@
                   role="error">
         FEHLER: Ungültiger Wert im product-Attribut: "<sch:value-of select="@product"/>".
         Erlaubte Werte: <sch:value-of select="string-join($product-values, ', ')"/>
-        Neuen Wert in der Variablen $product-values am Anfang dieser Datei eintragen.
+        Bitte gültigen Wert im @product-Attribut eintragen
+        oder erlaubte Werte in dita_rules.sch ergänzen.
       </sch:assert>
 
     </sch:rule>
