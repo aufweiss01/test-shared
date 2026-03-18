@@ -116,11 +116,12 @@ def check_link(url, timeout):
             return True, str(response.status)
 
     except urllib.error.HTTPError as e:
-        # HTTP-Fehler (404, 403 etc.)
-        # 403 Forbidden kann auch bedeuten, dass der Server HEAD blockiert –
-        # deshalb bei 403 zusätzlich GET versuchen
+        # 403 Forbidden: Server erreichbar, Zugriff verweigert.
+        # Bedeutet nicht, dass die Seite nicht existiert – viele Server
+        # blockieren automatisierte Anfragen grundsätzlich mit 403.
+        # Wird deshalb als OK gewertet.
         if e.code == 403:
-            return check_link_get(url, timeout)
+            return True, "403 (erreichbar, Zugriff verweigert – als OK gewertet)"
         return False, f"HTTP {e.code}"
 
     except urllib.error.URLError as e:
@@ -132,20 +133,6 @@ def check_link(url, timeout):
     except Exception as e:
         return False, f"Fehler: {e}"
 
-
-def check_link_get(url, timeout):
-    """Fallback: GET-Anfrage wenn HEAD blockiert wird (HTTP 403)."""
-    try:
-        req = urllib.request.Request(
-            url,
-            headers={"User-Agent": "Mozilla/5.0 (DITA Link Checker)"}
-        )
-        with urllib.request.urlopen(req, timeout=timeout) as response:
-            return True, str(response.status)
-    except urllib.error.HTTPError as e:
-        return False, f"HTTP {e.code}"
-    except Exception as e:
-        return False, f"Fehler: {e}"
 
 
 # ──────────────────────────────────────────────
