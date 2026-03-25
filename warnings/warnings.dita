@@ -19,13 +19,13 @@
         <term>Operationsmikroskop</term> und <term>Navigationsgerät</term>
         Fehlfunktionen auftreten.</consequence>
         <howtoavoid>
-          <ul>
-            <li>Stellen Sie sicher, dass alle Komponenten der
+          <sl>
+            <sli>Stellen Sie sicher, dass alle Komponenten der
             <term>Navigationsschnittstelle</term> –
             <term>mechanische Schnittstelle</term> und
-            <term>Softwareschnittstelle</term> – vollständig dokumentiert sind.</li>
-            <li>Lassen Sie die Dokumentation vor der Freigabe prüfen.</li>
-          </ul>
+            <term>Softwareschnittstelle</term> – vollständig dokumentiert sind.</sli>
+            <sli>Lassen Sie die Dokumentation vor der Freigabe prüfen.</sli>
+          </sl>
         </howtoavoid>
       </messagepanel>
 
