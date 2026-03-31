@@ -11,11 +11,6 @@
       <!-- conref-Adresse: warnings.dita#warnings/warn_schnittstellendoku
           Referenziert aus: docs/tasks/t_analyse_aufgabenstellung.dita -->
 
-      <hazardsymbol>
-        <image keyref="img_warnsymbol_allgemein"/>
-        <alt>Warnsymbol Katze</alt>
-      </hazardsymbol>
-
       <messagepanel>
         <typeofhazard>Fehlfunktion durch unvollständige
         Schnittstellendokumentation</typeofhazard>
@@ -33,6 +28,10 @@
           </sl>
         </howtoavoid>
       </messagepanel>
+
+      <hazardsymbol keyref="img_warnsymbol_allgemein">
+        <alt>Warnsymbol</alt>
+      </hazardsymbol>
 
     </hazardstatement>
 
